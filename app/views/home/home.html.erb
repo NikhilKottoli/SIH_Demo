@@ -1,0 +1,109 @@
+
+<style>
+        .Big{
+            display: flex;
+            flex-direction: column;
+            height: 90vh;
+        }
+        .heading{
+            text-align: center;
+            color: #007bff;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .file-upload {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        label {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        label:hover {
+            background-color: #0056b3;
+        }
+
+        .btn {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .btn:hover {
+            background-color: #218838;
+        }
+
+        .warning {
+            color: red;
+            margin-top: 10px;
+            display: none;
+        }
+        .image{
+            width: 200px;
+            height: 200px;
+            border-radius: 5px;
+            margin-bottom: [20px];
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+</style>
+
+<div class="Big">
+<h1 class="heading">Document Verification Software</h1>
+<div class="container">
+  <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" class="image" alt="Profile picture placeholder">
+  <h1>Upload Your Photo</h1>
+  <%= form_with url: upload_path, method: :post, local: true, html: { multipart: true } do |form| %>
+    <div class="file-upload">
+      <%= form.file_field :file, id: "photoInput", accept: "image/*", required: true %>
+      <%= form.label :file, "Choose a photo", for: "photoInput" %>
+    </div>
+    <%= form.submit "Upload" %>
+  <% end %>
+</div>
+</div>
+
+<script>
+    document.getElementById('uploadButton').addEventListener('click', function(event) {
+        const photoInput = document.getElementById('photoInput');
+        const fileSizeWarning = document.getElementById('fileSizeWarning');
+
+        if (photoInput.files.length === 0) {
+            fileSizeWarning.textContent = "No file selected. Please choose a file.";
+            fileSizeWarning.style.display = 'block';
+            event.preventDefault(); // Prevent form submission
+        } else if (photoInput.files[0].size > 100 * 1024 * 1024) { // 100MB in bytes
+            fileSizeWarning.textContent = "File size exceeds 100MB. Please choose a smaller file.";
+            fileSizeWarning.style.display = 'block';
+            event.preventDefault(); // Prevent form submission
+        } else {
+            fileSizeWarning.style.display = 'none';
+        }
+    });
+</script>
